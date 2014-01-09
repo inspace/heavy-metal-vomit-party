@@ -4,9 +4,12 @@ from math import radians, sin, cos, asin, sqrt, pi, atan2
 def dist_vector(needle, haystack):
     #values are associated hackstack data. For instance haystack is a list of Google site locations
     #values are the IPs associated with those locations by index.
-    dlat = np.radians(haystack[:,0]) - radians(needle[0])
-    dlon = np.radians(haystack[:,1]) - radians(needle[1])
-    a = np.square(np.sin(dlat/2.0)) + cos(radians(needle[0])) * np.cos(np.radians(haystack[:,0])) * np.square(np.sin(dlon/2.0))
+    lats = [x[0] for x in haystack]
+    lons = [x[1] for x in haystack]
+
+    dlat = np.radians(lats) - radians(needle[0])
+    dlon = np.radians(lons) - radians(needle[1])
+    a = np.square(np.sin(dlat/2.0)) + cos(radians(needle[0])) * np.cos(np.radians(lats)) * np.square(np.sin(dlon/2.0))
     great_circle_distance = 2 * np.arcsin(np.minimum(np.sqrt(a), np.repeat(1, len(a))))
     d = 6367 * great_circle_distance  #vector of distances
     return d
@@ -42,7 +45,7 @@ def valid(lat, lon):
 
 def within(needle, haystack, values, dist):
     d = dist_vector(needle, haystack)
-    i = numpy.where(d < dist) #array of indexes of distances less than dist
+    i = np.where(d < dist) #array of indexes of distances less than dist
     dists = d[i]             #numpy-specific. extract all indexes in i from d
     elements = [values[x] for x in i[0]]
     return zip(dists, elements)
