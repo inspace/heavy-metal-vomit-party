@@ -50,10 +50,34 @@ def within(needle, haystack, values, dist):
     elements = [values[x] for x in i[0]]
     return zip(dists, elements)
 
-def dist_filter(points, max_dist):
+def dist_filter(points, values, max_dist):
+        
+    if len(points) != len(values):
+        raise Exception('points and values lists must be the same length!')
+
+    p_len = len(points)
+    range_list = range(0, p_len)
+    discard_set = set()
+    index_set = set(range_list)
+
+    for i1 in range_list:
+        for i2 in range_list:
+            if i1 != i2 and i1 not in discard_set and i2 not in discard_set:
+                p1 = points[i1]
+                p2 = points[i2]
+                dist = haversine(p1[0], p1[1], p2[0], p2[1])
+                if dist <= max_dist:
+                    discard_set.add(i2)
+
+    keep = index_set.difference(discard_set)
+    
+    values = [values[i] for i in keep]    
+    return values
+
     """
     Discard points that within max_dist of another point.
     TODO: This can be much, much better
+    """
     """
     discard_set = set()
     point_set = set(points)
@@ -67,3 +91,4 @@ def dist_filter(points, max_dist):
 
     keep = point_set.difference(discard_set)
     return keep
+    """
