@@ -75,6 +75,10 @@ class Mapper(object):
 
         return new_trace
 
+    def mapPairs(self, trace):
+        new_trace = [(ip, self.mapIp(ip)) for ip in trace]
+        return new_trace
+
     def as2ipMap(self, trace):
         new_map = {}
         for ip in trace:
