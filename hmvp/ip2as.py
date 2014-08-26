@@ -4,6 +4,7 @@ import time
 import sys
 import ipaddr
 from os.path import expanduser
+import hmvp
 
 class Mapper(object):
     
@@ -58,7 +59,8 @@ class Mapper(object):
             return 'NA'
 
         try:
-            return self.tree[ip]
+            asn = self.tree[ip]
+            return hmvp.ip.fix_asn(asn)
         except KeyError:
             return 'NA'        
 

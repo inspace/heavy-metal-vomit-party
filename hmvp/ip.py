@@ -28,4 +28,4 @@ def fix_asn(asn):
     return asn
 
 def to24(ip):
-    return ip[:ip.rfind('.')]
+    return ip[:ip.rfind('.')+1]+'0'
