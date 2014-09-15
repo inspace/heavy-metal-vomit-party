@@ -29,3 +29,18 @@ def fix_asn(asn):
 
 def to24(ip):
     return ip[:ip.rfind('.')+1]+'0'
+
+def all_24s():
+
+    for first in range(1, 256):
+        if first == 10:
+             continue
+        for second in range(0, 256):
+            if first == 192 and second == 168:
+                continue
+            if first == 172 and (second >= 16 and second <= 31):
+                continue
+ 
+            for third in range(0, 256):
+                address = '%d.%d.%d.0' % (first, second, third)
+                yield address
